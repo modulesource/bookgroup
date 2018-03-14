@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function bookgroup_install() {
+
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function bookgroup_uninstall() {
+}
+
+/**
+* Implements hook_schema().
+ */
+function bookgroup_schema() {
+
+	$schema = array();
+
+	return $schema;
+}
