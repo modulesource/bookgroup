@@ -9,25 +9,87 @@
  * Implements Hook Menu.
  */
 function bookgroup_menu() {
+  $items = array();
   $items['bookgroup'] = array(
     'title' => t('Book Groups'),
     'description' => t('Manage an online Book Group'),
     'page callback' => 'bookgroup_entry',
-    'access callback' => 'bookgroup_user_access',
+    'access callback' => TRUE,
+//    'access callback' => 'bookgroup_user_access',
     'type' => MENU_NORMAL_ITEM,
+  );
+  $items['bookgroup/dashboard'] = array(
+    'title' => t('My Book Groups'),
+    'weight' => 10,
+    'description' => 'Manage the Inventory of Imported Files and Tables.',
+    'page callback' => 'bookgroup_dashboard',
+//    'access arguments' => array('administer users'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items['bookgroup/join'] = array(
+    'title' => t('Join'),
+    'weight' => 20,
+    'description' => 'Manage the Inventory of Imported Files and Tables.',
+    'page callback' => 'bookgroup_join',
+//    'access arguments' => array('administer users'),
+    'type' => MENU_LOCAL_TASK,
   );
 
   return $items;
 }
 
 function bookgroup_user_access() {
+  drupal_set_message(t('User Access'));
 	
-//  drupal_goto('bookgroup/events');
 }
 
 /**
  * Initial Module Entry.
  */
 function bookgroup_entry() {
-	
+  drupal_set_message(t('Got here.'));
+  drupal_goto('bookgroup/dashboard');
 }
+/**
+ * Bookgroup Dashboard
+ */
+function bookgroup_dashboard() {
+  $data = new stdClass();
+  
+  $form = drupal_get_form('bookgroup_dashboard_form', $data);
+  return drupal_render($form);
+}
+function bookgroup_dashboard_form($form, &$form_state, $data) {
+  $form['submit'] = array(
+    '#type' => 'submit',
+//    '#attributes' => array('style'=>'visibility:hidden'),
+    '#value' => t('Submit'),
+  );  
+  return $form;
+}
+function bookgroup_dashboard_form_validate($form, &$form_state) {
+}
+function bookgroup_dashboard_form_submit($form, &$form_state) {
+}
+/**
+ * Bookgroup Join
+ */
+function bookgroup_join() {
+  $data = new stdClass();
+  
+  $form = drupal_get_form('bookgroup_join_form', $data);
+  return drupal_render($form);
+}
+function bookgroup_join_form($form, &$form_state, $data) {
+  $form['submit'] = array(
+    '#type' => 'submit',
+//    '#attributes' => array('style'=>'visibility:hidden'),
+    '#value' => t('Submit'),
+  );  
+  return $form;
+}
+function bookgroup_join_form_validate($form, &$form_state) {
+}
+function bookgroup_join_form_submit($form, &$form_state) {
+}
+
