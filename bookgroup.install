@@ -7,8 +7,17 @@ function bookgroup_install() {
   $memberships[] = array('mid'=>1, 'uid'=>2, 'gid'=>0, 'lid'=>1, 'member_since'=>strtotime('2018-03-22'), 'member_thru'=>0,);
   $memberships[] = array('mid'=>2, 'uid'=>3, 'gid'=>0, 'lid'=>2, 'member_since'=>strtotime('2018-03-22'), 'member_thru'=>0,);
   foreach($memberships as $mbr) {
-    $cnt = db_insert('bookgroup_memberships')
+    $id = db_insert('bookgroup_memberships')
                 ->fields($mbr)
+                ->execute();
+  }
+  
+  $libraries[] = array('lid'=>1, 'uid'=>2, 'bookgroup_libraryname'=>"Drupal Development Books",  'bookgroup_libraryfocus'=>"Books about Drupal CMS Setup and Development.",    'established'=>strtotime(date('Y-m-d')),);
+  $libraries[] = array('lid'=>2, 'uid'=>2, 'bookgroup_libraryname'=>"AWS Devops Books",          'bookgroup_libraryfocus'=>"Configuration and Operating Amazon Web Services.", 'established'=>strtotime(date('Y-m-d')),);
+  $libraries[] = array('lid'=>3, 'uid'=>3, 'bookgroup_libraryname'=>"PHP Framework Development", 'bookgroup_libraryfocus'=>"Implementing Websites with PHP Frameworks",        'established'=>strtotime(date('Y-m-d')),);
+  foreach($libraries as $lib) {
+    $id = db_insert('bookgroup_libraries')
+                ->fields($lib)
                 ->execute();
   }
 }
@@ -109,6 +118,19 @@ function bookgroup_schema() {
 	'length' => 255,
 	'not null' => TRUE,
 	'default' => '',
+      ),
+      'bookgroup_libraryfocus' => array(
+        'description' => 'The library books subject focus.',
+	'type' => 'varchar',
+	'length' => 255,
+	'not null' => TRUE,
+	'default' => '',
+      ),
+      'established' => array(
+        'description' => 'The library start date.',
+	'type' => 'int',
+	'not null' => TRUE,
+	'default' => 0,
       ),
     ),
     'primary key' => array('lid'),

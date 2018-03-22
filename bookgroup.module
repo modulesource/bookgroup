@@ -116,12 +116,20 @@ function bookgroup_libraries() {
       $_SESSION['bookgroup_current_library'] = $row->lid;
     }
   }
+  $data->librarylist = bookgroup_get_libraries_list();
   
   $form = drupal_get_form('bookgroup_libraries_form', $data);
   return drupal_render($form);
 }
 function bookgroup_libraries_form($form, &$form_state, $data) {
   drupal_set_message('<pre>data: '.var_export($data,TRUE).'</pre>');
+  $form['library'] = array(
+    '#type' => 'select',
+    '#title' => t('Library'),
+    '#options' => $data->librarylist,
+    '#value' => $data->current_library,
+    '#attributes' => array('onchange' => 'this.form.submit();'),
+  );
   $form['submit'] = array(
     '#type' => 'submit',
     '#attributes' => array('style'=>'visibility:hidden'),
@@ -132,6 +140,17 @@ function bookgroup_libraries_form($form, &$form_state, $data) {
 function bookgroup_libraries_form_validate($form, &$form_state) {
 }
 function bookgroup_libraries_form_submit($form, &$form_state) {
+}
+function bookgroup_get_libraries_list() {
+  $list = array();
+  $result = db_select('bookgroup_libraries','l')
+                ->fields('l')
+                ->orderBy('bookgroup_libraryname')
+                ->execute();
+  while($row = $result->fetch()) {
+    $list[$row->lid] = $row->bookgroup_libraryname;
+  }
+  return $list;
 }
 /**
  * Bookgroup Discussions
