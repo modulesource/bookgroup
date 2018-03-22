@@ -5,4 +5,25 @@
  * Manage a book group library of E-Books.
  */
 
+/**
+ * Implements Hook Menu.
+ */
+function bookgroup_menu() {
+  $items['bookgroup'] = array(
+    'title' => t('Book Groups'),
+    'description' => t('Manage an online Book Group'),
+    'page callback' => 'bookgroup_entry',
+    'access callback' => 'bookgroup_user_access',
+    'type' => MENU_NORMAL_ITEM,
+  );
 
+  return $items;
+}
+
+function bookgroup_user_access() {
+
+}
+
+function bookgroup_entry() {
+	
+}

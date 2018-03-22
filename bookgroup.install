@@ -18,7 +18,31 @@ function bookgroup_uninstall() {
  */
 function bookgroup_schema() {
 
-	$schema = array();
-
-	return $schema;
+  $schema = array();
+  $schema['bookgroup_books'] = array(
+    'description' => 'The base table for bookgroup books.',
+    'fields' => array(
+      'bid' => array(
+        'description' => 'The primary identifier for a book.',
+	'type' => 'serial',
+	'unsigned' => TRUE,
+	'not null' => TRUE,
+      ),
+      'lid' => array(
+        'description' => 'The primary identifier for a library.',
+	'type' => 'int',
+	'not null' => TRUE,
+	'default' => 0,
+      ),
+      'book_filename' => array(
+        'description' => 'The complete path/filename for the book.'
+	'type' => 'varchar',
+	'length' => 255,
+	'not null' => TRUE,
+	'default' => '',
+      ),
+    ),
+    'primary key' => array('bid'),
+  );
+  return $schema;
 }
