@@ -21,7 +21,8 @@ function bookgroup_menu() {
 }
 
 function bookgroup_user_access() {
-
+	
+  drupal_goto('bookgroup/events');
 }
 
 /**
