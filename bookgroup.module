@@ -15,16 +15,16 @@ function bookgroup_menu() {
     'description' => t('Manage an online Book Group'),
     'page callback' => 'bookgroup_entry',
     'access callback' => 'bookgroup_user_access',
-	'access arguments' => array('bookgroup_access'),
+    'access arguments' => array('bookgroup_access'),
     'type' => MENU_NORMAL_ITEM,
   );
-  $items['bookgroup/dashboard'] = array(
+  $items['bookgroup/groups'] = array(
     'title' => t('Book Groups'),
     'weight' => 10,
     'description' => 'Manage the Inventory of Imported Files and Tables.',
-    'page callback' => 'bookgroup_dashboard',
+    'page callback' => 'bookgroup_groups',
     'access callback' => 'bookgroup_user_access',
-	'access arguments' => array('dashboard_access'),
+    'access arguments' => array('group_access'),
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );
   $items['bookgroup/libraries'] = array(
@@ -33,16 +33,16 @@ function bookgroup_menu() {
     'description' => 'Manage the Inventory of Imported Files and Tables.',
     'page callback' => 'bookgroup_libraries',
     'access callback' => 'bookgroup_user_access',
-	'access arguments' => array('library_access'),
+    'access arguments' => array('library_access'),
     'type' => MENU_LOCAL_TASK,
   );
-  $items['bookgroup/calendar'] = array(
-    'title' => t('Calendar'),
+  $items['bookgroup/discussions'] = array(
+    'title' => t('Discussions'),
     'weight' => 30,
     'description' => 'Manage the Inventory of Imported Files and Tables.',
-    'page callback' => 'bookgroup_calendar',
+    'page callback' => 'bookgroup_discussions',
     'access callback' => 'bookgroup_user_access',
-	'access arguments' => array('calendar_access'),
+    'access arguments' => array('discussion_access'),
     'type' => MENU_LOCAL_TASK,
   );
 
@@ -50,8 +50,8 @@ function bookgroup_menu() {
 }
 
 function bookgroup_user_access($string='', $account = NULL) {
-  drupal_set_message('<pre>'.t('User Access: ').var_export($string,TRUE).
-                     "\n".t('acct: ').var_export($account,TRUE).'</pre>');
+//  drupal_set_message('<pre>'.t('User Access: ').var_export($string,TRUE).
+//                     "\n".t('acct: ').var_export($account,TRUE).'</pre>');
   $access = TRUE;
 
   return $access;
@@ -61,20 +61,20 @@ function bookgroup_user_access($string='', $account = NULL) {
  * Initial Module Entry.
  */
 function bookgroup_entry() {
-  drupal_set_message(t('Got here.'));
-  drupal_goto('bookgroup/dashboard');
+//  drupal_set_message(t('Got here.'));
+  drupal_goto('bookgroup/groups');
 }
 /**
  * Bookgroup Dashboard
  */
-function bookgroup_dashboard() {
-  drupal_set_message(t('Got to Dashboard.'));
+function bookgroup_groups() {
+//  drupal_set_message(t('Got to Groups.'));
   $data = new stdClass();
   
-  $form = drupal_get_form('bookgroup_dashboard_form', $data);
+  $form = drupal_get_form('bookgroup_groups_form', $data);
   return drupal_render($form);
 }
-function bookgroup_dashboard_form($form, &$form_state, $data) {
+function bookgroup_groups_form($form, &$form_state, $data) {
   $form['submit'] = array(
     '#type' => 'submit',
 //    '#attributes' => array('style'=>'visibility:hidden'),
@@ -82,9 +82,9 @@ function bookgroup_dashboard_form($form, &$form_state, $data) {
   );  
   return $form;
 }
-function bookgroup_dashboard_form_validate($form, &$form_state) {
+function bookgroup_groups_form_validate($form, &$form_state) {
 }
-function bookgroup_dashboard_form_submit($form, &$form_state) {
+function bookgroup_groups_form_submit($form, &$form_state) {
 }
 /**
  * Bookgroup Libraries
@@ -108,15 +108,15 @@ function bookgroup_libraries_form_validate($form, &$form_state) {
 function bookgroup_libraries_form_submit($form, &$form_state) {
 }
 /**
- * Bookgroup Calendar
+ * Bookgroup Discussions
  */
-function bookgroup_calendar() {
+function bookgroup_discussions() {
   $data = new stdClass();
   
-  $form = drupal_get_form('bookgroup_calendar_form', $data);
+  $form = drupal_get_form('bookgroup_discussions_form', $data);
   return drupal_render($form);
 }
-function bookgroup_calendar_form($form, &$form_state, $data) {
+function bookgroup_discussions_form($form, &$form_state, $data) {
   $form['submit'] = array(
     '#type' => 'submit',
 //    '#attributes' => array('style'=>'visibility:hidden'),
@@ -124,8 +124,8 @@ function bookgroup_calendar_form($form, &$form_state, $data) {
   );  
   return $form;
 }
-function bookgroup_calendar_form_validate($form, &$form_state) {
+function bookgroup_discussions_form_validate($form, &$form_state) {
 }
-function bookgroup_calendar_form_submit($form, &$form_state) {
+function bookgroup_discussions_form_submit($form, &$form_state) {
 }
 
