@@ -24,6 +24,9 @@ function bookgroup_user_access() {
 
 }
 
+/**
+ * Initial Module Entry.
+ */
 function bookgroup_entry() {
 	
 }
