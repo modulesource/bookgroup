@@ -14,33 +14,47 @@ function bookgroup_menu() {
     'title' => t('Book Groups'),
     'description' => t('Manage an online Book Group'),
     'page callback' => 'bookgroup_entry',
-    'access callback' => TRUE,
-//    'access callback' => 'bookgroup_user_access',
+    'access callback' => 'bookgroup_user_access',
+	'access arguments' => array('bookgroup_access'),
     'type' => MENU_NORMAL_ITEM,
   );
   $items['bookgroup/dashboard'] = array(
-    'title' => t('My Book Groups'),
+    'title' => t('Book Groups'),
     'weight' => 10,
     'description' => 'Manage the Inventory of Imported Files and Tables.',
     'page callback' => 'bookgroup_dashboard',
-//    'access arguments' => array('administer users'),
+    'access callback' => 'bookgroup_user_access',
+	'access arguments' => array('dashboard_access'),
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );
-  $items['bookgroup/join'] = array(
-    'title' => t('Join'),
+  $items['bookgroup/libraries'] = array(
+    'title' => t('Libraries'),
     'weight' => 20,
     'description' => 'Manage the Inventory of Imported Files and Tables.',
-    'page callback' => 'bookgroup_join',
-//    'access arguments' => array('administer users'),
+    'page callback' => 'bookgroup_libraries',
+    'access callback' => 'bookgroup_user_access',
+	'access arguments' => array('library_access'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['bookgroup/calendar'] = array(
+    'title' => t('Calendar'),
+    'weight' => 30,
+    'description' => 'Manage the Inventory of Imported Files and Tables.',
+    'page callback' => 'bookgroup_calendar',
+    'access callback' => 'bookgroup_user_access',
+	'access arguments' => array('calendar_access'),
     'type' => MENU_LOCAL_TASK,
   );
 
   return $items;
 }
 
-function bookgroup_user_access() {
-  drupal_set_message(t('User Access'));
-	
+function bookgroup_user_access($string='', $account = NULL) {
+  drupal_set_message('<pre>'.t('User Access: ').var_export($string,TRUE).
+                     "\n".t('acct: ').var_export($account,TRUE).'</pre>');
+  $access = TRUE;
+
+  return $access;
 }
 
 /**
@@ -54,6 +68,7 @@ function bookgroup_entry() {
  * Bookgroup Dashboard
  */
 function bookgroup_dashboard() {
+  drupal_set_message(t('Got to Dashboard.'));
   $data = new stdClass();
   
   $form = drupal_get_form('bookgroup_dashboard_form', $data);
@@ -72,15 +87,15 @@ function bookgroup_dashboard_form_validate($form, &$form_state) {
 function bookgroup_dashboard_form_submit($form, &$form_state) {
 }
 /**
- * Bookgroup Join
+ * Bookgroup Libraries
  */
-function bookgroup_join() {
+function bookgroup_libraries() {
   $data = new stdClass();
   
-  $form = drupal_get_form('bookgroup_join_form', $data);
+  $form = drupal_get_form('bookgroup_libraries_form', $data);
   return drupal_render($form);
 }
-function bookgroup_join_form($form, &$form_state, $data) {
+function bookgroup_libraries_form($form, &$form_state, $data) {
   $form['submit'] = array(
     '#type' => 'submit',
 //    '#attributes' => array('style'=>'visibility:hidden'),
@@ -88,8 +103,29 @@ function bookgroup_join_form($form, &$form_state, $data) {
   );  
   return $form;
 }
-function bookgroup_join_form_validate($form, &$form_state) {
+function bookgroup_libraries_form_validate($form, &$form_state) {
 }
-function bookgroup_join_form_submit($form, &$form_state) {
+function bookgroup_libraries_form_submit($form, &$form_state) {
+}
+/**
+ * Bookgroup Calendar
+ */
+function bookgroup_calendar() {
+  $data = new stdClass();
+  
+  $form = drupal_get_form('bookgroup_calendar_form', $data);
+  return drupal_render($form);
+}
+function bookgroup_calendar_form($form, &$form_state, $data) {
+  $form['submit'] = array(
+    '#type' => 'submit',
+//    '#attributes' => array('style'=>'visibility:hidden'),
+    '#value' => t('Submit'),
+  );  
+  return $form;
+}
+function bookgroup_calendar_form_validate($form, &$form_state) {
+}
+function bookgroup_calendar_form_submit($form, &$form_state) {
 }
 
