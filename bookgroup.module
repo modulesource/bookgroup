@@ -45,6 +45,15 @@ function bookgroup_menu() {
     'access arguments' => array('discussion_access'),
     'type' => MENU_LOCAL_TASK,
   );
+  $items['bookgroup/members'] = array(
+    'title' => t('Members'),
+    'weight' => 40,
+    'description' => 'Manage the Inventory of Imported Files and Tables.',
+    'page callback' => 'bookgroup_members',
+    'access callback' => 'bookgroup_user_access',
+    'access arguments' => array('membership_access'),
+    'type' => MENU_LOCAL_TASK,
+  );
 
   return $items;
 }
@@ -127,5 +136,26 @@ function bookgroup_discussions_form($form, &$form_state, $data) {
 function bookgroup_discussions_form_validate($form, &$form_state) {
 }
 function bookgroup_discussions_form_submit($form, &$form_state) {
+}
+/**
+ * Bookgroup Memberships
+ */
+function bookgroup_members() {
+  $data = new stdClass();
+  
+  $form = drupal_get_form('bookgroup_members_form', $data);
+  return drupal_render($form);
+}
+function bookgroup_members_form($form, &$form_state, $data) {
+  $form['submit'] = array(
+    '#type' => 'submit',
+//    '#attributes' => array('style'=>'visibility:hidden'),
+    '#value' => t('Submit'),
+  );  
+  return $form;
+}
+function bookgroup_members_form_validate($form, &$form_state) {
+}
+function bookgroup_members_form_submit($form, &$form_state) {
 }
 

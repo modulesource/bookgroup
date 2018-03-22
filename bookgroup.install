@@ -67,13 +67,89 @@ function bookgroup_schema() {
         'type' => 'text',
         'not null' => TRUE,
       ),
-      'pages' => array(
+      'book_pages' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'book_purchase_url' => array(
+        'description' => 'The purchase url for the book.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('bid'),
+  );
+  $schema['bookgroup_libraries'] = array(
+    'description' => 'The base table for bookgroup libraries.',
+    'fields' => array(
+      'lid' => array(
+        'description' => 'The primary identifier for a book.',
+	'type' => 'serial',
+	'unsigned' => TRUE,
+	'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The sponsoring user id.',
+	'type' => 'int',
+	'not null' => TRUE,
+	'default' => 0,
+      ),
+      'bookgroup_libraryname' => array(
+        'description' => 'The complete path/filename for the book.',
+	'type' => 'varchar',
+	'length' => 255,
+	'not null' => TRUE,
+	'default' => '',
+      ),
+    ),
+    'primary key' => array('lid'),
+  );
+  $schema['bookgroup_groups'] = array(
+    'description' => 'The base table for book group.',
+    'fields' => array(
+      'gid' => array(
+        'description' => 'The primary identifier for a group.',
+	'type' => 'serial',
+	'unsigned' => TRUE,
+	'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The sponsoring user id.',
+	'type' => 'int',
+	'not null' => TRUE,
+	'default' => 0,
+      ),
+      'bookgroup_groupname' => array(
+        'description' => 'The complete group name.',
+	'type' => 'varchar',
+	'length' => 255,
+	'not null' => TRUE,
+	'default' => '',
+      ),
+      'bookgroup_memberfocus' => array(
+        'description' => 'The membership focus.',
+	'type' => 'varchar',
+	'length' => 255,
+	'not null' => TRUE,
+	'default' => '',
+      ),
+      'bookgroup_bookfocus' => array(
+        'description' => 'The book subject focus.',
+	'type' => 'varchar',
+	'length' => 255,
+	'not null' => TRUE,
+	'default' => '',
+      ),
+      'bookgroup_memberlimits' => array(
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
       ),
     ),
-    'primary key' => array('bid'),
+    'primary key' => array('gid'),
   );
   return $schema;
 }
