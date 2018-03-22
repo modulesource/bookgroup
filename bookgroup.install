@@ -24,22 +24,22 @@ function bookgroup_schema() {
     'fields' => array(
       'bid' => array(
         'description' => 'The primary identifier for a book.',
-	'type' => 'serial',
-	'unsigned' => TRUE,
-	'not null' => TRUE,
+	    'type' => 'serial',
+	    'unsigned' => TRUE,
+	    'not null' => TRUE,
       ),
       'lid' => array(
         'description' => 'The primary identifier for a library.',
-	'type' => 'int',
-	'not null' => TRUE,
-	'default' => 0,
+	    'type' => 'int',
+	    'not null' => TRUE,
+	    'default' => 0,
       ),
       'book_filename' => array(
-        'description' => 'The complete path/filename for the book.'
-	'type' => 'varchar',
-	'length' => 255,
-	'not null' => TRUE,
-	'default' => '',
+        'description' => 'The complete path/filename for the book.',
+	    'type' => 'varchar',
+	    'length' => 255,
+	    'not null' => TRUE,
+	    'default' => '',
       ),
     ),
     'primary key' => array('bid'),
