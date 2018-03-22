@@ -99,13 +99,29 @@ function bookgroup_groups_form_submit($form, &$form_state) {
  * Bookgroup Libraries
  */
 function bookgroup_libraries() {
-  if(isset($_SESSION['bookgroup_current_library'])) $current_library = $_SESSION['bookgroup_current_library'];
+  global $user;
   $data = new stdClass();
+  $data->my_libraries = array();
+  if(isset($_SESSION['bookgroup_current_library'])) $data->current_library = $_SESSION['bookgroup_current_library'];
+
+  $result = db_select('bookgroup_memberships','m')
+                ->fields('m')
+                ->condition('lid',0,'<>');
+  if($user->uid != 1) $result->condition('uid',$user->uid,'=');
+  $set = $result->execute();
+  while($row = $set->fetch()) {
+    $data->my_libraries[] = $row->lid;
+    if(!isset($_SESSION['bookgroup_current_library'])) {
+      $data->current_library = $row->lid;
+      $_SESSION['bookgroup_current_library'] = $row->lid;
+    }
+  }
   
   $form = drupal_get_form('bookgroup_libraries_form', $data);
   return drupal_render($form);
 }
 function bookgroup_libraries_form($form, &$form_state, $data) {
+  drupal_set_message('<pre>data: '.var_export($data,TRUE).'</pre>');
   $form['submit'] = array(
     '#type' => 'submit',
     '#attributes' => array('style'=>'visibility:hidden'),

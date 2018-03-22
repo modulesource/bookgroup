@@ -4,7 +4,13 @@
  * Implements hook_install().
  */
 function bookgroup_install() {
-
+  $memberships[] = array('mid'=>1, 'uid'=>2, 'gid'=>0, 'lid'=>1, 'member_since'=>strtotime('2018-03-22'), 'member_thru'=>0,);
+  $memberships[] = array('mid'=>2, 'uid'=>3, 'gid'=>0, 'lid'=>2, 'member_since'=>strtotime('2018-03-22'), 'member_thru'=>0,);
+  foreach($memberships as $mbr) {
+    $cnt = db_insert('bookgroup_memberships')
+                ->fields($mbr)
+                ->execute();
+  }
 }
 
 /**
