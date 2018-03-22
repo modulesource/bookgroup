@@ -151,5 +151,47 @@ function bookgroup_schema() {
     ),
     'primary key' => array('gid'),
   );
+  $schema['bookgroup_memberships'] = array(
+    'description' => 'The base table for user memberships.',
+    'fields' => array(
+      'mid' => array(
+        'description' => 'The primary identifier for a membership.',
+	'type' => 'serial',
+	'unsigned' => TRUE,
+	'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The members user id.',
+	'type' => 'int',
+	'not null' => TRUE,
+	'default' => 0,
+      ),
+      'gid' => array(
+        'description' => 'The members group id.',
+	'type' => 'int',
+	'not null' => TRUE,
+	'default' => 0,
+      ),
+      'lid' => array(
+        'description' => 'The members library id.',
+	'type' => 'int',
+	'not null' => TRUE,
+	'default' => 0,
+      ),
+      'member_since' => array(
+        'description' => 'The membership start date.',
+	'type' => 'int',
+	'not null' => TRUE,
+	'default' => 0,
+      ),
+      'member_thru' => array(
+        'description' => 'The membership end date.',
+	'type' => 'int',
+	'not null' => TRUE,
+	'default' => 0,
+      ),
+    ),
+    'primary key' => array('mid'),
+  );
   return $schema;
 }

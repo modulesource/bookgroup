@@ -86,7 +86,7 @@ function bookgroup_groups() {
 function bookgroup_groups_form($form, &$form_state, $data) {
   $form['submit'] = array(
     '#type' => 'submit',
-//    '#attributes' => array('style'=>'visibility:hidden'),
+    '#attributes' => array('style'=>'visibility:hidden'),
     '#value' => t('Submit'),
   );  
   return $form;
@@ -99,6 +99,7 @@ function bookgroup_groups_form_submit($form, &$form_state) {
  * Bookgroup Libraries
  */
 function bookgroup_libraries() {
+  if(isset($_SESSION['bookgroup_current_library'])) $current_library = $_SESSION['bookgroup_current_library'];
   $data = new stdClass();
   
   $form = drupal_get_form('bookgroup_libraries_form', $data);
@@ -107,7 +108,7 @@ function bookgroup_libraries() {
 function bookgroup_libraries_form($form, &$form_state, $data) {
   $form['submit'] = array(
     '#type' => 'submit',
-//    '#attributes' => array('style'=>'visibility:hidden'),
+    '#attributes' => array('style'=>'visibility:hidden'),
     '#value' => t('Submit'),
   );  
   return $form;
@@ -128,7 +129,7 @@ function bookgroup_discussions() {
 function bookgroup_discussions_form($form, &$form_state, $data) {
   $form['submit'] = array(
     '#type' => 'submit',
-//    '#attributes' => array('style'=>'visibility:hidden'),
+    '#attributes' => array('style'=>'visibility:hidden'),
     '#value' => t('Submit'),
   );  
   return $form;
@@ -149,7 +150,7 @@ function bookgroup_members() {
 function bookgroup_members_form($form, &$form_state, $data) {
   $form['submit'] = array(
     '#type' => 'submit',
-//    '#attributes' => array('style'=>'visibility:hidden'),
+    '#attributes' => array('style'=>'visibility:hidden'),
     '#value' => t('Submit'),
   );  
   return $form;
