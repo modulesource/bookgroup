@@ -118,6 +118,38 @@ function bookgroup_libraries() {
   }
   $data->librarylist = bookgroup_get_libraries_list();
   
+  $data->booklist = array();
+  if(in_array($data->current_library,$data->my_libraries)) {
+    $data->form = 'list';
+    if(module_exists('datatables')) {
+      $result = db_select('bookgroup_books','b')
+                    ->fields('b')
+                    ->condition('lid',$data->current_library,'=')
+                    ->orderBy('book_category')
+                    ->orderBy('book_title')
+                    ->orderBy('book_sub_title')
+                    ->execute();
+    } else {
+      $result = db_select('bookgroup_books','b')
+                    ->fields('b')
+                    ->condition('lid',$data->current_library,'=')
+                    ->orderBy('book_category')
+                    ->orderBy('book_title')
+                    ->orderBy('book_sub_title')
+                    ->extend('PagerDefault')->limit(25)
+                    ->execute();
+    }
+    while($row = $result->fetch()) {
+      $data->booklist[] = $row;
+    }
+  } else {
+    $data->form = 'req_access';
+    $data->lib = db_select('bookgroup_libraries','l')
+                        ->fields('l')
+                        ->condition('lid',$data->current_library,'=')
+                        ->execute()
+                        ->fetch();                 
+  }
   $form = drupal_get_form('bookgroup_libraries_form', $data);
   return drupal_render($form);
 }
@@ -129,6 +161,95 @@ function bookgroup_libraries_form($form, &$form_state, $data) {
     '#options' => $data->librarylist,
     '#value' => $data->current_library,
     '#attributes' => array('onchange' => 'this.form.submit();'),
+  );
+  $data_header = array(
+                   array(
+                     'data' => '<center>'.t('Subject').'</center>',
+                     'datatable_options' => array(
+                       'bSortable' => TRUE,
+                       'bSearchable' => TRUE,
+                     ),
+                   ),
+                   array(
+                     'data' => '<center>'.t('Title').'</center>',
+                     'datatable_options' => array(
+                       'bSortable' => TRUE,
+                       'bSearchable' => TRUE,
+                     ),
+                   ),
+                   array(
+                     'data' => '<center>'.t('Pages').'</center>',
+                     'datatable_options' => array(
+                       'bSortable' => FALSE,
+                       'bSearchable' => FALSE,
+                     ),
+                   ),
+//                   array(
+//                     'data' => '<center>'.t('Status').'</center>',
+//                     'datatable_options' => array(
+//                       'bSortable' => FALSE,
+//                       'bSearchable' => FALSE,
+//                     ),
+//                   ),
+                   array(
+                     'data' => '<center>'.l('[ '.t('ADD').' ]','bookgroup/books/edit',array('query'=>array('b'=>0))).'</center>',
+                     'datatable_options' => array(
+                       'bSortable' => FALSE,
+                       'bSearchable' => FALSE,
+                     ),
+                   ),        
+                 );
+  $output = '';
+  $subjects = array();
+  $rows = $data->booklist;
+  if(count($rows) > 0) {
+    foreach($rows as $row) {
+      $filename = $row->book_filename;
+      $title = l($row->book_title,$row->book_filename,array('attributes'=>array('target'=>'_blank','title'=>$row->book_sub_title."\n\n".$row->book_contents)));
+      if($row->book_pages == 0) $pages = '';
+      else $pages = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.sprintf('% 10d',$row->book_pages);
+      $books[] = array($row->book_category,
+                       $title,
+                       $pages,
+//                       '<center>'.$row->status.'</center>',
+                       '<center style="white-space:nowrap;">'.
+                       l('[ EDIT ]','bookgroup/books/edit',array('query'=>array('b'=>$row->bid,'a'=>''))).' '.
+                       l('[ DELETE ]','/bookgroup/books/edit',array('query'=>array('b'=>$row->bid,'a'=>'DEL'))).
+                       '</center>',
+                      );
+    }
+  } else {
+    $books[] = array('',t('No Books Found'),'','','');
+  }
+  if(module_exists('datatables')) {
+    $output = theme('datatable', array('header' => $data_header,
+                                       'rows' => $books,
+                                       'attributes' => array('datatable_options' => array(
+                                                               'bFilter'         => TRUE,
+                                                               'bInfo'           => TRUE,
+                                                               'bScroll'         => TRUE,
+                                                               'scrollY'         => 200,
+                                                               'iDisplayLength'  => 10,
+                                                               'bScrollCollapse' => TRUE,
+                                                               'sPaginationType' => 'full_numbers',
+                                                               'paging'          => FALSE,),
+                                       'style' => 'line-height:80%;'),
+                                ));
+  } else {
+    $html_header = array();
+    foreach($data_header as $n => $val) {
+      $html_header[$n] = $val['data'];
+    }
+    $output = theme('table', array('header' => $html_header,
+                                   'rows' => $books,
+                                   'attributes' => array('style'=>'line-height: 70%;')));
+    // add the pager
+    $output .= theme('pager');
+  }
+  $form['list'] = array(
+    '#type' => 'item',
+//    '#title' => t('Book Subjects'),
+    '#markup' => $output,
   );
   $form['submit'] = array(
     '#type' => 'submit',
